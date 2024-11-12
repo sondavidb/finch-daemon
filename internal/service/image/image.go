@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/containerd/containerd/images"
+	"github.com/containerd/containerd/v2/core/images"
 	"github.com/distribution/reference"
 
 	"github.com/runfinch/finch-daemon/api/handlers/image"

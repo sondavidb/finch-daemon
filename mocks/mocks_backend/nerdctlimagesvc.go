@@ -9,10 +9,10 @@ import (
 	io "io"
 	reflect "reflect"
 
-	images "github.com/containerd/containerd/images"
+	images "github.com/containerd/containerd/v2/core/images"
 	platforms "github.com/containerd/platforms"
-	remotes "github.com/containerd/containerd/remotes"
-	docker "github.com/containerd/containerd/remotes/docker"
+	remotes "github.com/containerd/containerd/v2/core/remotes"
+	docker "github.com/containerd/containerd/v2/core/remotes/docker"
 	imgutil "github.com/containerd/nerdctl/v2/pkg/imgutil"
 	dockerconfigresolver "github.com/containerd/nerdctl/v2/pkg/imgutil/dockerconfigresolver"
 	dockercompat "github.com/containerd/nerdctl/v2/pkg/inspecttypes/dockercompat"
