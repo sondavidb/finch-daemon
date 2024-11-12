@@ -13,9 +13,9 @@ import (
 	platforms "github.com/containerd/platforms"
 	remotes "github.com/containerd/containerd/remotes"
 	docker "github.com/containerd/containerd/remotes/docker"
-	imgutil "github.com/containerd/nerdctl/pkg/imgutil"
-	dockerconfigresolver "github.com/containerd/nerdctl/pkg/imgutil/dockerconfigresolver"
-	dockercompat "github.com/containerd/nerdctl/pkg/inspecttypes/dockercompat"
+	imgutil "github.com/containerd/nerdctl/v2/pkg/imgutil"
+	dockerconfigresolver "github.com/containerd/nerdctl/v2/pkg/imgutil/dockerconfigresolver"
+	dockercompat "github.com/containerd/nerdctl/v2/pkg/inspecttypes/dockercompat"
 	gomock "github.com/golang/mock/gomock"
 	v1 "github.com/opencontainers/image-spec/specs-go/v1"
 )
