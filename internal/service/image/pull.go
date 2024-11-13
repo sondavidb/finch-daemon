@@ -20,6 +20,8 @@ import (
 	"github.com/runfinch/finch-daemon/pkg/errdefs"
 )
 
+const IndexServer = "https://index.docker.io/v1/"
+
 func (s *service) Pull(ctx context.Context, name, tag, platformStr string, ac *dockertypes.AuthConfig, outStream io.Writer) error {
 	// get host platform's default spec if unspecified
 	var platform ocispec.Platform
@@ -110,7 +112,7 @@ func (s *service) getAuthCreds(refDomain string, ac dockertypes.AuthConfig) (doc
 		saHostname := convertToHostname(sa)
 		// "registry-1.docker.io" can show up as "https://index.docker.io/v1/" in ServerAddress
 		if expectedDomain == "registry-1.docker.io" {
-			if saHostname != refDomain && sa != dockerconfigresolver.IndexServer {
+			if saHostname != refDomain && sa != IndexServer {
 				return nil, fmt.Errorf("specified server address %s does not match the image reference domain %s", sa, refDomain)
 			}
 		} else if saHostname != refDomain {

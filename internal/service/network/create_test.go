@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 
+	ncTypes "github.com/containerd/nerdctl/v2/pkg/api/types"
 	"github.com/containerd/nerdctl/v2/pkg/netutil"
 	"github.com/golang/mock/gomock"
 	. "github.com/onsi/ginkgo/v2"
@@ -173,7 +174,7 @@ var _ = Describe("Network Service Create Network Implementation", func() {
 				logger.EXPECT().Debugf(gomock.Any(), gomock.Any())
 
 				nid := networkID
-				ncNetClient.EXPECT().CreateNetwork(gomock.Any()).DoAndReturn(func(actual netutil.CreateOptions) (*netutil.NetworkConfig, error) {
+				ncNetClient.EXPECT().CreateNetwork(gomock.Any()).DoAndReturn(func(actual ncTypes.NetworkCreateOptions) (*netutil.NetworkConfig, error) {
 					Expect(actual.Driver).Should(Equal(defaultExpectedDriver))
 					Expect(actual.IPAMDriver).Should(Equal(defaultExpectedIPAMDriver))
 					return &netutil.NetworkConfig{NerdctlID: &nid}, nil
@@ -195,7 +196,7 @@ var _ = Describe("Network Service Create Network Implementation", func() {
 				logger.EXPECT().Debugf(gomock.Any(), gomock.Any())
 
 				nid := networkID
-				ncNetClient.EXPECT().CreateNetwork(gomock.Any()).DoAndReturn(func(actual netutil.CreateOptions) (*netutil.NetworkConfig, error) {
+				ncNetClient.EXPECT().CreateNetwork(gomock.Any()).DoAndReturn(func(actual ncTypes.NetworkCreateOptions) (*netutil.NetworkConfig, error) {
 					Expect(actual.Driver).Should(Equal(overrideExpectedDriver))
 					Expect(actual.IPAMDriver).Should(Equal(overrideExpectedIPAMDriver))
 					return &netutil.NetworkConfig{NerdctlID: &nid}, nil
@@ -236,7 +237,7 @@ var _ = Describe("Network Service Create Network Implementation", func() {
 				logger.EXPECT().Debugf(gomock.Any(), gomock.Any())
 
 				nid := networkID
-				ncNetClient.EXPECT().CreateNetwork(gomock.Any()).DoAndReturn(func(actual netutil.CreateOptions) (*netutil.NetworkConfig, error) {
+				ncNetClient.EXPECT().CreateNetwork(gomock.Any()).DoAndReturn(func(actual ncTypes.NetworkCreateOptions) (*netutil.NetworkConfig, error) {
 					Expect(actual.Subnets).Should(Equal(expectedSubnets))
 					Expect(actual.IPRange).Should(Equal(expectedIPRange))
 					Expect(actual.Gateway).Should(Equal(expectedGateway))
@@ -266,7 +267,7 @@ var _ = Describe("Network Service Create Network Implementation", func() {
 					logger.EXPECT().Debugf(gomock.Any(), gomock.Any())
 
 					nid := networkID
-					ncNetClient.EXPECT().CreateNetwork(gomock.Any()).DoAndReturn(func(actual netutil.CreateOptions) (*netutil.NetworkConfig, error) {
+					ncNetClient.EXPECT().CreateNetwork(gomock.Any()).DoAndReturn(func(actual ncTypes.NetworkCreateOptions) (*netutil.NetworkConfig, error) {
 						Expect(actual.Subnets).Should(Equal(expectedSubnets))
 						Expect(actual.IPRange).Should(BeEmpty())
 						Expect(actual.Gateway).Should(BeEmpty())
@@ -295,7 +296,7 @@ var _ = Describe("Network Service Create Network Implementation", func() {
 					logger.EXPECT().Debugf(gomock.Any(), gomock.Any())
 
 					nid := networkID
-					ncNetClient.EXPECT().CreateNetwork(gomock.Any()).DoAndReturn(func(actual netutil.CreateOptions) (*netutil.NetworkConfig, error) {
+					ncNetClient.EXPECT().CreateNetwork(gomock.Any()).DoAndReturn(func(actual ncTypes.NetworkCreateOptions) (*netutil.NetworkConfig, error) {
 						Expect(actual.Subnets).Should(BeEmpty())
 						Expect(actual.IPRange).Should(Equal(expectedIPRange))
 						Expect(actual.Gateway).Should(BeEmpty())
@@ -324,7 +325,7 @@ var _ = Describe("Network Service Create Network Implementation", func() {
 					logger.EXPECT().Debugf(gomock.Any(), gomock.Any())
 
 					nid := networkID
-					ncNetClient.EXPECT().CreateNetwork(gomock.Any()).DoAndReturn(func(actual netutil.CreateOptions) (*netutil.NetworkConfig, error) {
+					ncNetClient.EXPECT().CreateNetwork(gomock.Any()).DoAndReturn(func(actual ncTypes.NetworkCreateOptions) (*netutil.NetworkConfig, error) {
 						Expect(actual.Subnets).Should(BeEmpty())
 						Expect(actual.IPRange).Should(BeEmpty())
 						Expect(actual.Gateway).Should(Equal(expectedGateway))

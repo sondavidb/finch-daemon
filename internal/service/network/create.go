@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	ncTypes "github.com/containerd/nerdctl/v2/pkg/api/types"
 	"github.com/containerd/nerdctl/v2/pkg/lockutil"
 	"github.com/containerd/nerdctl/v2/pkg/netutil"
 
@@ -49,8 +50,8 @@ func (s *service) Create(ctx context.Context, request types.NetworkCreateRequest
 		return options
 	}
 
-	createOptionsFrom := func(r types.NetworkCreateRequest) netutil.CreateOptions {
-		options := netutil.CreateOptions{
+	createOptionsFrom := func(r types.NetworkCreateRequest) ncTypes.NetworkCreateOptions {
+		options := ncTypes.NetworkCreateOptions{
 			Name:        r.Name,
 			Driver:      "bridge",
 			IPAMDriver:  "default",
@@ -120,7 +121,8 @@ func (s *service) Create(ctx context.Context, request types.NetworkCreateRequest
 
 // setBridgeName will override the bridge name in an existing CNI config file for a network.
 func (s *service) setBridgeName(net *netutil.NetworkConfig, bridge string) error {
-	return lockutil.WithDirLock(s.netClient.NetconfPath(), func() error {
+	networkDir := s.getDirForNetworkName(netutil.DefaultNetworkName)
+	return lockutil.WithDirLock(networkDir, func() error {
 		// first, make sure that the bridge name is not used by any of the existing bridge networks
 		bridgeNet, err := s.getNetworkByBridgeName(bridge)
 		if err != nil {
@@ -171,9 +173,16 @@ func (s *service) setBridgeName(net *netutil.NetworkConfig, bridge string) error
 	})
 }
 
-// From https://github.com/containerd/nerdctl/blob/v1.5.0/pkg/netutil/netutil.go#L186-L188
+func (s *service) getDirForNetworkName(netName string) string {
+	if netName == netutil.DefaultNetworkName || s.netClient.Namespace() == "" {
+		return s.netClient.NetconfPath()
+	}
+	return filepath.Join(s.netClient.NetconfPath(), s.netClient.Namespace())
+}
+
+// From https://github.com/containerd/nerdctl/blob/v2.0.0/pkg/netutil/netutil.go#L277C18-L283
 func (s *service) getConfigPathForNetworkName(netName string) string {
-	return filepath.Join(s.netClient.NetconfPath(), "nerdctl-"+netName+".conflist")
+	return filepath.Join(s.getDirForNetworkName(netName), "nerdctl-"+netName+".conflist")
 }
 
 type bridgePlugin struct {
